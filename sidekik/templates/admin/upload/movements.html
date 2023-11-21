@@ -1,0 +1,121 @@
+{% extends "admin/base.html" %}
+{% import "macro.html" as mac %}
+
+{% block body %}
+    <div class="row justify-content-center mb-5">
+        <div class="col-sm-10">
+            <h1 class="my-3">Upload Movements</h1>
+            <p>
+                To suggest warm-up moves, sidekik needs to know how workout and warm-up moves are 
+                related.
+            </p>
+            <p>
+                In a CSV file, write all the workout movements in the top row. For each column 
+                underneath the respective workout movement, list the warm-up movements you like to 
+                use. See the example below:
+            </p>
+        </div>
+    </div>
+        
+    <div class="row justify-content-center">
+        <div class="col-sm-5">
+            <h3>
+                Example Good File:
+            </h3>
+            <p>
+                <table class="table">
+                    <tr>
+                        <th>Double-unders</th>
+                        <th>Running</th>
+                    </tr>
+                    <tr>
+                        <td>Calf Raises</td>
+                        <td>Calf Raises</td>
+                    </tr>
+                    <tr>
+                        <td>Wrist Rolls</td>
+                        <td>Walking Lunges</td>
+                    </tr>
+                    <tr>
+                        <td>Pogo Jumps</td>
+                        <td>Single-leg Deadlift</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Sumo Squat</td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+
+        <div class="col-sm-5">
+            <h3>
+                Example Bad File:
+            </h3>
+            <p>
+                <table class="table">
+                    <tr>
+                        <th>Double-unders</th>
+                        <th>Running</th>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>Calf Raises</td>
+                        <td>C Raises</td>
+                    </tr>
+                    <tr>
+                        <td>Wrist Rolls</td>
+                        <td>Walking Lunges</td>
+                    </tr>
+                    <tr>
+                        <td>Pogo Jumps</td>
+                        <td>Single-leg Deadlift</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Sumo Squat</td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <p>
+            If you notice any duplicated names, like in the bad file above, you can correct them
+            in the Movements section after uploading. 
+        </p>
+    </div>
+    
+    <div class="row justify-content-center mb-5">
+        <div class="col-sm-10">
+            <h2 class="mb-3">
+                File Upload
+            </h2>
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ mac.render_field(form.fmoves) }}
+                </div>
+                {{ form.submit(class="btn btn-danger mb-3") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block tail %}
+    <script>
+        var data = {{ data|tojson }}
+
+        function promptLabelling() {
+            if(data.moves_uploaded == true){
+                if(window.confirm("Movements uploaded. Do you want to label them now?")){
+                    window.location.replace("{{ url_for('upload/categories.index') }}");
+                }
+            }    
+        }
+
+        if("moves_uploaded" in data){
+            window.onload = promptLabelling
+        }
+    </script>
+{% endblock %}

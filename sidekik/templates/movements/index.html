@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% import "macro.html" as mac %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid index_text p-5 position_relative" id="sidekik_home">
+        <div class="position-absolute top-50 start-50 translate-middle" style="width: calc(100% - 6rem);">
+            <h1>sidekik helps you create warm-ups for any workout.</h1>
+            <h3>List your movements and sidekik takes care of the rest.</h3>
+        </div>
+        <div class="position-absolute bottom-0 start-50 translate-middle-x" style="padding-bottom: 3rem;">
+            <h4><a href="#create_warmup" >Try below</a></h4>
+        </div>
+    </div>
+
+    <div class="container" id="create_warmup">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="row justify-content-center">
+                        <div class="col-sm-8 alert alert-info" role="alert">{{ message }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %} 
+
+        <div class="row">
+            <div class="col-sm-6 px-5 mb-5">
+                <h2 class="mb-4">
+                    Workout Movements
+                </h2>
+                <form action= "" method="post" class="form" novalidate>
+                    {{ form.hidden_tag() }}
+                    
+                    {% with m = form.moves[0] %}
+                        {{ m.hidden_tag() }}
+                        <div class="mb-4">
+                            {{ mac.render_field(m.move, add_class="work-moves", placeholder="Movement") }}
+                        </div>
+                    {% endwith %}
+        
+                    {% for m in form.moves[1:] %}
+                        {{ m.hidden_tag() }}
+                        <div class="mb-4">
+                            {{ mac.render_field(m.move, add_class="work-moves", placeholder="Movement") }}
+                        </div>
+                    {% endfor %}
+                    
+                    {{ form.submit(class="btn btn-danger") }}
+                </form>
+            </div>
+
+            <div class="col-sm-6 px-5">
+                {% if not warm_moves %}
+                    <h2 class="mb-4">
+                        Guide
+                    </h2>
+                    <p>
+                        Enter your workout movements in the form.
+                    </p>
+                    <p>
+                        As you type, sidekik will recommend movements. Make sure your movements are
+                        found in the list.
+                    </p>
+                    <p>
+                        Once complete, press submit and sidekik will get to work. It may take a few 
+                        seconds to create your warm-up.
+                    </p>
+                    <p style="font-weight: bold;">
+                        Note: this app is still in alpha, so some warm-ups might not be creatable at
+                        this time.
+                    </p>
+                {% else %}
+                    <h2 class="mb-4">
+                        Warm-up Movements
+                    </h2>
+                    <div id="warmup_list" style="position: relative;">
+                        <ul id="warmup">
+                            {% for move in warm_moves %}
+                                <li class="mb-4">{{ move }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% if warm_moves|length > 1 %}
+                            <button class="btn btn-danger" id="randomise_button" onclick="randomiseList()">Randomise</button>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            {% if warm_moves %}
+                var warmupOptions = {{ warm_options|safe }}
+
+                $(document).ready(function() {
+                    $('#warmup_list').css('min-height', $('form').height());
+                });
+
+                function randomiseList() {
+                    var ix = Math.floor(Math.random() * warmupOptions.length);
+                    var warmup = warmupOptions[ix];
+                    warmupOptions.splice(ix);
+
+                    $('#warmup').empty();
+                    for(var i=0; i < warmup.length; i++){
+                        $('#warmup').append($('<li>').attr('class', 'mb-4').append(warmup[i]));
+                    };
+
+                    if(warmupOptions.length == 0){
+                        $('#randomise_button').hide();
+                    }
+                }
+
+            {% endif %}
+
+            $(function() {
+                $('.work-moves').autocomplete({
+                    source: {{ work_moves|safe }}
+                });
+            });
+
+            {% if scroll %}
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.location.hash = '#{{ scroll }}';
+                });
+            {% endif %}
+        </script>
+    {% endblock %}
+
+{% endblock %}

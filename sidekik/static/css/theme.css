@@ -1,0 +1,32 @@
+#create_warmup {
+    min-height: 100vh;
+    padding-top: 86px;
+}
+
+.index_text {
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.index_text a {
+    color: #FFFFFF;
+}
+
+#randomise_button {
+    bottom: 0;
+    position: absolute;
+}
+
+#sidekik_home {
+    background-color: #DD614A;
+    height: calc(100vh - 49px);
+}
+
+.sidekik_navbar {
+    background: #FFFFFF;
+    border-bottom: 1px solid #E7E7E7;
+}
+
+.sidekik_theme {
+    color: #DD614A;
+}

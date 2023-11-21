@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+
+{% block body %}
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-sm-6">
+                <h1>Warm-ups Labelled</h1>
+                <h3>
+                    {% if lab_warm_perc == 100 %}
+                        <span style="color: green;">&#10003;</span>
+                    {% else %}
+                        <span style="color: red;">&#10005;</span>
+                    {% endif %}
+                    <span class="sidekik_theme">{{ lab_warm_perc }}%</span>
+                </h3>
+            </div>
+
+            <div class="col-sm-6">
+                <h1>Workouts Labelled</h1>
+                <h3>
+                    {% if lab_work_perc == 100 %}
+                        <span style="color: green;">&#10003;</span>
+                    {% else %}
+                        <span style="color: red;">&#10005;</span>
+                    {% endif %}
+                    <span class="sidekik_theme">{{ lab_work_perc }}%</span>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Warm-ups Created</h1>
+                <h3>
+                    <span class="sidekik_theme">{{ n_warmups }}</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+{% endblock %}

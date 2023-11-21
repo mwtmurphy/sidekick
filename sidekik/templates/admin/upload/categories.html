@@ -1,0 +1,96 @@
+{% extends "admin/base.html" %}
+{% import "macro.html" as mac %}
+
+{% block body %}
+    <div class="row justify-content-center mb-3">
+        <div class="col-sm-10">
+            <h1 class="my-3">Upload Movement Categories</h1>
+            <p>
+                To better suggest a warm-up, sidekik needs to know the type of each movement, in
+                order to create warm-ups that prime all the required muscles.
+            </p>
+            <p>
+                <a href="{{ url_for('upload/categories.download') }}">Download all unlabelled movements</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-sm-10">
+            <p>
+                In the template provided, label each movement with a 1 if it matches one, or more,
+                of the following categories:
+            </p>
+            <p>
+                <table class="table">
+                    <tr>
+                        <th>Category</th>
+                        <th>Description</th>
+                    </tr>
+                    {% for row in move_types %}
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </p>
+        </div>
+    </div>
+        
+    <div class="row justify-content-center mb-5">
+        <div class="col-sm-10">
+            <p>
+                An example good file might look like this:
+            </p>
+            <p>
+                <table class="table">
+                    <tr>
+                        <th>movement</th>
+                        {% for row in move_types[:2] %}
+                            <th>{{ row.name }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Movement 1</td>
+                        <td></td>
+                        <td>1</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Movement 2</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                It's important not to edit the top row for this to work.
+            </p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-sm-10">
+            <p>
+                If you notice any duplicated names, you can correct them in the Movements section 
+                and then re-download the template file. 
+            </p>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center mb-5">
+        <div class="col-sm-10">
+            <h2 class="mb-3">
+                File Upload
+            </h2>
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ mac.render_field(form.fmoves) }}
+                </div>
+                {{ form.submit(class="btn btn-danger mb-3") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

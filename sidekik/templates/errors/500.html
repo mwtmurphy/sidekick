@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h1 class="my-5">Oops, looks like an error occurred on our side.</h1>
+            <div class="mb-3">
+                <p>
+                    Email thesidekikapp@gmail.com and we will solve the problem as soon as possible.
+                </p>
+                <p>
+                    <a href="{{ url_for('index') }}">Return to App.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

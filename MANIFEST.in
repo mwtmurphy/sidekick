@@ -1,0 +1,4 @@
+graft sidekik/data
+graft sidekik/static
+graft sidekik/templates
+global-exclude *.pyc
