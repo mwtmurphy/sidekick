@@ -1,6 +1,6 @@
 # Sidekick
  
-Aputomates gym processes .
+Automates gym warm-up building. Currently does not work due to Heroku sunsetting free tier PostgreSQL and prioritising other personal projects.
 
 ## Project Architecture
 
